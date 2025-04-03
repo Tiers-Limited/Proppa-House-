@@ -5,6 +5,8 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 require("dotenv").config();
 require("./utils/database");
+require("./utils/google");
+require("./utils/facebook");
 const crypto = require("crypto");
 
 var indexRouter = require("./routes/index");
@@ -20,13 +22,25 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use("/images", express.static("public/images"));
 app.use(express.static(path.join(__dirname, "public")));
 
-//PH_Info_Center
+// PH_Info_Center
 var addInfoCenterRouter = require("./routes/InfoCenter/add");
 var getInfoCenterRouter = require("./routes/InfoCenter/get");
 var updateInfoCenterRouter = require("./routes/InfoCenter/update");
 var deleteInfoCenterRouter = require("./routes/InfoCenter/delete");
+
+// Auth
+var SignupRouter = require("./routes/Auth/Signup/Signup");
+var LoginRouter = require("./routes/Auth/Login/Login");
+var SignupGoogleRouter = require("./routes/Auth/Signup/Google");
+var LoginGoogleRouter = require("./routes/Auth/Login/Google");
+var SignupFacebookRouter = require("./routes/Auth/Signup/Facebook");
+var LoginFacebookRouter = require("./routes/Auth/Login/Facebook");
+
+// Contact
+var EmailRouter = require("./routes/Contact/Email/Email");
 
 function validateAPIKey(req, res, next) {
   const authkey = req.header("api-key");
@@ -102,6 +116,17 @@ app.use("/api/v1/infoCenter/add", addInfoCenterRouter);
 app.use("/api/v1/infoCenter/get", getInfoCenterRouter);
 app.use("/api/v1/infoCenter/update", updateInfoCenterRouter);
 app.use("/api/v1/infoCenter/delete", deleteInfoCenterRouter);
+
+//Auth
+app.use("/api/v1/auth/signup", SignupRouter);
+app.use("/api/v1/auth/login", LoginRouter);
+app.use("/api/v1/auth/signup/google", SignupGoogleRouter);
+app.use("/api/v1/auth/login/google", LoginGoogleRouter);
+app.use("/api/v1/auth/signup/facebook", SignupFacebookRouter);
+app.use("/api/v1/auth/login/facebook", LoginFacebookRouter);
+
+// Contact
+app.use("/api/v1/contact/email", EmailRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
