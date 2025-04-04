@@ -8,6 +8,15 @@ require("./utils/database");
 require("./utils/google");
 require("./utils/facebook");
 const crypto = require("crypto");
+const { initWebSocket } = require("./utils/socket");
+const http = require("http");
+const server = http.createServer(app);
+
+initWebSocket(server);
+
+server.listen(5000, () => {
+  console.log("Server is running on http://localhost:5000");
+});
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -41,6 +50,14 @@ var LoginFacebookRouter = require("./routes/Auth/Login/Facebook");
 
 // Contact
 var EmailRouter = require("./routes/Contact/Email/Email");
+var SupportRouter = require("./routes/Contact/Support/Support");
+
+// Chat
+var SendMessageRouter = require("./routes/Chat/sendMessage");
+var getMessageRouter = require("./routes/Chat/get");
+
+// Report
+var ReportRouter = require("./routes/Report/Report");
 
 function validateAPIKey(req, res, next) {
   const authkey = req.header("api-key");
@@ -127,6 +144,14 @@ app.use("/api/v1/auth/login/facebook", LoginFacebookRouter);
 
 // Contact
 app.use("/api/v1/contact/email", EmailRouter);
+app.use("/api/v1/contact/support", SupportRouter);
+
+// Chat
+app.use("/api/v1/chat/sendMessage", SendMessageRouter);
+app.use("/api/v1/chat/get", getMessageRouter);
+
+// Report
+app.use("/api/v1/report", ReportRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
