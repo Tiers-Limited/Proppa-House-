@@ -18,6 +18,19 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    phoneNumber: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    gender: {
+      type: String,
+      default: null,
+    },
+    dob: {
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );

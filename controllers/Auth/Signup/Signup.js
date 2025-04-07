@@ -3,7 +3,7 @@ const crypto = require("crypto");
 
 exports.Signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, phoneNumber, gender, dob } = req.body;
 
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
@@ -17,18 +17,22 @@ exports.Signup = async (req, res) => {
       .update(password)
       .digest("hex");
 
-    // Create new user
+    // Create new user with optional fields
     const newUser = new User({
       name,
       email,
       password: hashedPassword,
+      phoneNumber: phoneNumber || null,
+      gender: gender || null,
+      dob: dob || null,
     });
 
     await newUser.save();
 
-    return res
-      .status(201)
-      .json({ message: "User registered successfully!", user: newUser });
+    return res.status(201).json({
+      message: "User registered successfully!",
+      user: newUser,
+    });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

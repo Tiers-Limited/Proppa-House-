@@ -47,6 +47,9 @@ var SignupGoogleRouter = require("./routes/Auth/Signup/Google");
 var LoginGoogleRouter = require("./routes/Auth/Login/Google");
 var SignupFacebookRouter = require("./routes/Auth/Signup/Facebook");
 var LoginFacebookRouter = require("./routes/Auth/Login/Facebook");
+var RegisterForRoleRouter = require("./routes/Auth/Signup/RegisterForRole");
+var RegisterForJobListingRouter = require("./routes/Auth/Signup/RegisterForJobListing");
+var EditUserRouter = require("./routes/Auth/Signup/EditUser");
 
 // Contact
 var EmailRouter = require("./routes/Contact/Email/Email");
@@ -58,6 +61,10 @@ var getMessageRouter = require("./routes/Chat/get");
 
 // Report
 var ReportRouter = require("./routes/Report/Report");
+
+// Services Hub
+var PropertyViewingRouter = require("./routes/ServicesHub/PropertyViewing/PropertyViewing");
+var PropertySearchRouter = require("./routes/ServicesHub/PropertySearch/PropertySearch");
 
 function validateAPIKey(req, res, next) {
   const authkey = req.header("api-key");
@@ -141,6 +148,9 @@ app.use("/api/v1/auth/signup/google", SignupGoogleRouter);
 app.use("/api/v1/auth/login/google", LoginGoogleRouter);
 app.use("/api/v1/auth/signup/facebook", SignupFacebookRouter);
 app.use("/api/v1/auth/login/facebook", LoginFacebookRouter);
+app.use("/api/v1/auth/signup/registerForRole", RegisterForRoleRouter);
+app.use("/api/v1/auth/signup/jobListing", RegisterForJobListingRouter);
+app.use("/api/v1/auth/signup/editUser", EditUserRouter);
 
 // Contact
 app.use("/api/v1/contact/email", EmailRouter);
@@ -152,6 +162,10 @@ app.use("/api/v1/chat/get", getMessageRouter);
 
 // Report
 app.use("/api/v1/report", ReportRouter);
+
+// Services Hub
+app.use("/api/v1/servicesHub/propertyViewing", PropertyViewingRouter);
+app.use("/api/v1/servicesHub/propertySearch", PropertySearchRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
