@@ -65,6 +65,8 @@ var ReportRouter = require("./routes/Report/Report");
 // Services Hub
 var PropertyViewingRouter = require("./routes/ServicesHub/PropertyViewing/PropertyViewing");
 var PropertySearchRouter = require("./routes/ServicesHub/PropertySearch/PropertySearch");
+var CleaningServiceRequestRouter = require("./routes/ServicesHub/PropertyMaintainance/CleaningServices/CleaningServiceRequest");
+var GardenAndLawnMaintainanceRouter = require("./routes/ServicesHub/PropertyMaintainance/GardenAndLawnMaintainance/GardenAndLawnMaintainance");
 
 function validateAPIKey(req, res, next) {
   const authkey = req.header("api-key");
@@ -166,6 +168,14 @@ app.use("/api/v1/report", ReportRouter);
 // Services Hub
 app.use("/api/v1/servicesHub/propertyViewing", PropertyViewingRouter);
 app.use("/api/v1/servicesHub/propertySearch", PropertySearchRouter);
+app.use(
+  "/api/v1/servicesHub/gardenLawnService",
+  GardenAndLawnMaintainanceRouter
+);
+app.use(
+  "/api/v1/servicesHub/cleaningServiceRequest",
+  CleaningServiceRequestRouter
+);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
