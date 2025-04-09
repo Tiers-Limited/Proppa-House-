@@ -67,6 +67,8 @@ var PropertyViewingRouter = require("./routes/ServicesHub/PropertyViewing/Proper
 var PropertySearchRouter = require("./routes/ServicesHub/PropertySearch/PropertySearch");
 var CleaningServiceRequestRouter = require("./routes/ServicesHub/PropertyMaintainance/CleaningServices/CleaningServiceRequest");
 var GardenAndLawnMaintainanceRouter = require("./routes/ServicesHub/PropertyMaintainance/GardenAndLawnMaintainance/GardenAndLawnMaintainance");
+var RepairServiceRouter = require("./routes/ServicesHub/RepairService/RepairService");
+var PropertyInsuranceRouter = require("./routes/ServicesHub/PropertyInsurance/PropertyInsurance");
 
 function validateAPIKey(req, res, next) {
   const authkey = req.header("api-key");
@@ -168,6 +170,8 @@ app.use("/api/v1/report", ReportRouter);
 // Services Hub
 app.use("/api/v1/servicesHub/propertyViewing", PropertyViewingRouter);
 app.use("/api/v1/servicesHub/propertySearch", PropertySearchRouter);
+app.use("/api/v1/servicesHub/repairService", RepairServiceRouter);
+app.use("/api/v1/servicesHub/propertyInsurance", PropertyInsuranceRouter);
 app.use(
   "/api/v1/servicesHub/gardenLawnService",
   GardenAndLawnMaintainanceRouter
