@@ -62,6 +62,12 @@ var getMessageRouter = require("./routes/Chat/get");
 // Report
 var ReportRouter = require("./routes/Report/Report");
 
+// Property Listers
+var PropertyListersRouter = require("./routes/PropertyListers/PropertyListers");
+
+// Admin
+var CategoryRouter = require("./routes/Admin/CMS/Category");
+
 // Services Hub
 var PropertyViewingRouter = require("./routes/ServicesHub/PropertyViewing/PropertyViewing");
 var PropertySearchRouter = require("./routes/ServicesHub/PropertySearch/PropertySearch");
@@ -167,6 +173,12 @@ app.use("/api/v1/chat/get", getMessageRouter);
 
 // Report
 app.use("/api/v1/report", ReportRouter);
+
+// Property Listers
+app.use("/api/v1/propertyListers", PropertyListersRouter);
+
+// Admin
+app.use("/api/v1/admin/category", CategoryRouter);
 
 // Services Hub
 app.use("/api/v1/servicesHub/propertyViewing", PropertyViewingRouter);
