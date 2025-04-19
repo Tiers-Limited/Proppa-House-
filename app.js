@@ -7,10 +7,12 @@ require("dotenv").config();
 require("./utils/database");
 require("./utils/google");
 require("./utils/facebook");
+const cron = require("node-cron");
 const crypto = require("crypto");
 const { initWebSocket } = require("./utils/socket");
 const http = require("http");
 const server = http.createServer(app);
+const { publishScheduledBlogs } = require("./controllers/Admin/CMS/Blog");
 
 initWebSocket(server);
 
@@ -33,6 +35,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use("/images", express.static("public/images"));
 app.use(express.static(path.join(__dirname, "public")));
+
+// Cron job to run every minute
+cron.schedule("* * * * *", async () => {
+  try {
+    await publishScheduledBlogs();
+    console.log(
+      `✅ Checked for scheduled blogs to publish at ${new Date().toISOString()}`
+    );
+  } catch (err) {
+    console.error("❌ Error while publishing scheduled blogs:", err.message);
+  }
+});
 
 // PH_Info_Center
 var addInfoCenterRouter = require("./routes/InfoCenter/add");
@@ -67,6 +81,15 @@ var PropertyListersRouter = require("./routes/PropertyListers/PropertyListers");
 
 // Admin
 var CategoryRouter = require("./routes/Admin/CMS/Category");
+var BlogRouter = require("./routes/Admin/CMS/Blog");
+var BlogInteractionsRouter = require("./routes/Admin/CMS/BlogInteractions");
+var BlogDashboardRouter = require("./routes/Admin/CMS/BlogDashboard");
+var MediaRouter = require("./routes/Admin/CMS/Media");
+var MeetOurTeamRouter = require("./routes/Admin/CMS/PageManagement/MeetOurTeam");
+var OurPartnersRouter = require("./routes/Admin/CMS/PageManagement/OurPartners");
+var BranchesRouter = require("./routes/Admin/CMS/PageManagement/Branches");
+var CountriesRouter = require("./routes/Admin/CMS/PageManagement/Countries.js");
+var AboutUsBannerRouter = require("./routes/Admin/CMS/PageManagement/AboutUsBanner.js");
 
 // Services Hub
 var PropertyViewingRouter = require("./routes/ServicesHub/PropertyViewing/PropertyViewing");
@@ -179,6 +202,15 @@ app.use("/api/v1/propertyListers", PropertyListersRouter);
 
 // Admin
 app.use("/api/v1/admin/category", CategoryRouter);
+app.use("/api/v1/admin/blog", BlogRouter);
+app.use("/api/v1/admin/blogInteractions", BlogInteractionsRouter);
+app.use("/api/v1/admin/blogDashboard", BlogDashboardRouter);
+app.use("/api/v1/admin/media", MediaRouter);
+app.use("/api/v1/admin/meetOurTeam", MeetOurTeamRouter);
+app.use("/api/v1/admin/ourPartners", OurPartnersRouter);
+app.use("/api/v1/admin/branches", BranchesRouter);
+app.use("/api/v1/admin/countries", CountriesRouter);
+app.use("/api/v1/admin/aboutUsBanner", AboutUsBannerRouter);
 
 // Services Hub
 app.use("/api/v1/servicesHub/propertyViewing", PropertyViewingRouter);
